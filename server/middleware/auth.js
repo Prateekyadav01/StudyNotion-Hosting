@@ -9,6 +9,7 @@ dotenv.config();
 exports.auth = async (req, res, next) => {
 	try {
 		// Extracting JWT from request cookies, body or header
+		console.log("token")
 		const token =
 			req.cookies.token ||
 			req.body.token ||
@@ -21,7 +22,7 @@ exports.auth = async (req, res, next) => {
 
 		try {
 			// Verifying the JWT using the secret key stored in environment variables
-			const decode = await jwt.verify(token, process.env.JWT_SECRET);
+			const decode = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 			console.log(decode);
 			// Storing the decoded JWT payload in the request object for further use
 			req.user = decode;
