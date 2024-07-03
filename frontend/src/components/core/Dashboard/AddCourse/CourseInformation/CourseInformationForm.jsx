@@ -68,7 +68,7 @@ export default function CourseInformationForm() {
       currentValues.coursePrice !== course.price ||
       currentValues.courseTags.toString() !== course.tag.toString() ||
       currentValues.courseBenefits !== course.whatYouWillLearn ||
-      currentValues.courseCategory._id !== course.category._id ||
+      // currentValues.courseCategory._id !== course.category._id ||
       currentValues.courseRequirements.toString() !==
         course.instructions.toString() ||
       currentValues.courseImage !== course.thumbnail
@@ -107,9 +107,9 @@ export default function CourseInformationForm() {
         if (currentValues.courseBenefits !== course.whatYouWillLearn) {
           formData.append("whatYouWillLearn", data.courseBenefits)
         }
-        if (currentValues.courseCategory._id !== course.category._id) {
-          formData.append("category", data.courseCategory)
-        }
+        // if (currentValues.courseCategory._id !== course.category._id) {
+        //   formData.append("category", data.courseCategory)
+        // }
         if (
           currentValues.courseRequirements.toString() !==
           course.instructions.toString()
@@ -142,7 +142,7 @@ export default function CourseInformationForm() {
     formData.append("price", data.coursePrice)
     formData.append("tag", JSON.stringify(data.courseTags))
     formData.append("whatYouWillLearn", data.courseBenefits)
-    formData.append("category", data.courseCategory)
+    // formData.append("category", data.courseCategory)
     formData.append("status", COURSE_STATUS.DRAFT)
     formData.append("instructions", JSON.stringify(data.courseRequirements))
     formData.append("thumbnailImage", data.courseImage)
@@ -221,7 +221,7 @@ export default function CourseInformationForm() {
         )}
       </div>
       {/* Course Category */}
-      <div className="flex flex-col space-y-2">
+      {/* <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseCategory">
           Course Category <sup className="text-pink-200">*</sup>
         </label>
@@ -246,7 +246,7 @@ export default function CourseInformationForm() {
             Course Category is required
           </span>
         )}
-      </div>
+      </div> */}
       {/* Course Tags */}
       <ChipInput
         label="Tags"
