@@ -55,31 +55,23 @@ exports.signup = async (req, res) => {
       })
     }
 
-    // Find the most recent OTP for the email
     const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1)
     console.log(response)
     if (response.length === 0) {
-      // OTP not found for the email
       return res.status(400).json({
         success: false,
         message: "The OTP is not valid",
       })
     } else if (otp !== response[0].otp) {
-      // Invalid OTP
       return res.status(400).json({
         success: false,
         message: "The OTP is not valid",
       })
     }
-
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10)
-
-    // Create the user
+    const hashedPassword = await bcrypt.hash(password, 10);
     let approved = ""
     approved === "Instructor" ? (approved = false) : (approved = true)
 
-    // Create the Additional Profile For User
     const profileDetails = await Profile.create({
       gender: null,
       dateOfBirth: null,
@@ -119,6 +111,7 @@ exports.login = async (req, res) => {
     const { email, password } = req.body
 
     // Check if email or password is missing
+    console.log(email,password);
     if (!email || !password) {
       // Return 400 Bad Request status code with error message
       return res.status(400).json({
@@ -127,9 +120,12 @@ exports.login = async (req, res) => {
       })
     }
 
-    // Find user with provided email
-    const user = await User.findOne({ email }).populate("additionalDetails")
 
+    // Find user with provided email
+    const user = await User.findOne({ email }).populate("additionalDetails").select("-password");
+
+
+    console.log(user);
     // If user not found with provided email
     if (!user) {
       // Return 401 Unauthorized status code with error message
@@ -138,12 +134,13 @@ exports.login = async (req, res) => {
         message: `User is not Registered with Us Please SignUp to Continue`,
       })
     }
-
+    console.log("accessToken Start");
     // Generate JWT token and Compare Password
     if (await bcrypt.compare(password, user.password)) {
+      console.log("password matched");
       const token = jwt.sign(
         { email: user.email, id: user._id, role: user.role },
-        process.env.JWT_SECRET,
+        process.env.ACCESS_TOKEN_SECRET,
         {
           expiresIn: "24h",
         }
@@ -214,6 +211,9 @@ exports.sendotp = async (req, res) => {
     const otpPayload = { email, otp }
     const otpBody = await OTP.create(otpPayload)
     console.log("OTP Body", otpBody)
+
+
+    
     res.status(200).json({
       success: true,
       message: `OTP Sent Successfully`,
