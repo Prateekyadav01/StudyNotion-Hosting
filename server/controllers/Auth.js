@@ -122,7 +122,7 @@ exports.login = async (req, res) => {
 
 
     // Find user with provided email
-    const user = await User.findOne({ email }).populate("additionalDetails").select("-password");
+    const user = await User.findOne({ email }).populate("additionalDetails")
 
 
     console.log(user);
@@ -135,6 +135,7 @@ exports.login = async (req, res) => {
       })
     }
     console.log("accessToken Start");
+    console.log(password + " "+ user.password);
     // Generate JWT token and Compare Password
     if (await bcrypt.compare(password, user.password)) {
       console.log("password matched");
@@ -148,7 +149,8 @@ exports.login = async (req, res) => {
 
       // Save token to user document in database
       user.token = token
-      user.password = undefined
+      const loginUser = await User.findOne({ email }).select("-password")
+      // user.password = undefined
       // Set cookie for token and return success response
       const options = {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
@@ -157,7 +159,7 @@ exports.login = async (req, res) => {
       res.cookie("token", token, options).status(200).json({
         success: true,
         token,
-        user,
+        loginUser,
         message: `User Login Success`,
       })
     } else {
