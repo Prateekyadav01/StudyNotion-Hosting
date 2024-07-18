@@ -3,6 +3,7 @@
 const BASE_URL = process.env.REACT_BASE_URL;
 
 // AUTH ENDPOINTS
+console.log("hjello apis");
 export const endpoints = {
   SENDOTP_API: BASE_URL + "/auth/sendotp",
   SIGNUP_API: BASE_URL + "/auth/signup",
