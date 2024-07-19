@@ -1,9 +1,13 @@
 // const BASE_URL = process.env.REACT_APP_BASE_URL
-// const BASE_URL = "http://localhost:4000/api/v1"
-const BASE_URL = process.env.REACT_BASE_URL;
+//  const BASE_URL = "http://localhost:4000/api/v1"
+// require('dotenv').config()
+
+
+// const BASE_URL = process.env.REACT_BASE_URL
+const BASE_URL = "https://studynotion-hosting-0efy.onrender.com/api/v1";
 
 // AUTH ENDPOINTS
-console.log("hjello apis");
+console.log("hjello apis", BASE_URL);
 export const endpoints = {
   SENDOTP_API: BASE_URL + "/auth/sendotp",
   SIGNUP_API: BASE_URL + "/auth/signup",
